@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>{{data.type.toUpperCase()}} {{data.userData.login}}</h1>
+<div mat-dialog-content>
+	<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="USERNAME" tabindex="1" [(ngModel)]="data.userData.userName">
+		    </mat-form-field>
+		</div>
+
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="PASSWORD" tabindex="1" [(ngModel)]="data.userData.password">
+		    </mat-form-field> 
+		</div>
+
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="EMAIL" tabindex="1" [(ngModel)]="data.userData.email">
+		    </mat-form-field>
+		</div>
+
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="ADDRESS" tabindex="1" [(ngModel)]="data.userData.address">
+		    </mat-form-field>
+		</div>
+		
+	    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <mat-select placeholder="Gender" [(ngModel)]="data.userData.gender">
+			        <mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
+			    </mat-select>
+		    </mat-form-field>
+		</div>
+	</div>
+</div>
+<div mat-dialog-actions>
+	<div *ngIf="data.type.toUpperCase() == 'ADD'; then addBlock; else editBlock"></div>
+	
+	<ng-template #addBlock>
+			<button mat-raised-button color="accent" (click)="save()" tabindex="2">SAVE</button>
+	</ng-template>
+	
+	<ng-template #editBlock>
+			<button mat-raised-button color="accent" (click)="saveEdit()" tabindex="2">SAVE</button>
+	</ng-template>
+	<button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">CANCEL</button>
+</div>

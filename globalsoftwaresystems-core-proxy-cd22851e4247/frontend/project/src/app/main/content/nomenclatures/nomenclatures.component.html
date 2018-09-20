@@ -1,0 +1,69 @@
+<div class="page-layout simple fullwidth" fusePerfectScrollbar>
+	<div class="header mat-accent-bg p-24 h-160" fxLayout="row"
+		fxLayoutAlign="space-between center">
+		<div fxLayout="column" fxLayoutAlign="center start">
+			<div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="secondary-text s-16">home</mat-icon>
+			</div>
+			<div class="h2 mt-16">Nomenclatures</div>
+			<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+				<mat-form-field fxFlex="100">
+					<mat-select class="text-color-black" placeholder="Choose type" [(ngModel)]="nomTypeCode">
+					<mat-option *ngFor="let type of allNomTypes" (click)="getChanges($event, type.value)" [value]="type.code">{{type.value}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<button mat-fab (click)="openDialog('add', {})"
+			class="add-product-button mat-white-bg my-12 mt-sm-0">
+			<mat-icon>add</mat-icon>
+		</button>
+	</div>
+	<div class="content">
+		<div class="example-container mat-elevation-z8">
+			<div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+				<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+					ERROR! API rate limit has been reached.
+				</div>
+			</div>
+			<mat-table  #table [dataSource]="dataSource" class="example-table"
+			matSort matSortActive="value" matSortDisableClear
+			matSortDirection="asc">
+			<ng-container matColumnDef="number">
+				<mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+				<mat-cell *matCellDef="let cIndex = index;">{{ getRowIndex(cIndex) }}</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="code">
+				<mat-header-cell
+					*matHeaderCellDef mat-sort-header disableClear="true">Code</mat-header-cell>
+				<mat-cell
+					*matCellDef="let row">{{ row.code }}</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="value">
+				<mat-header-cell
+					*matHeaderCellDef mat-sort-header disableClear="true">Value</mat-header-cell>
+				<mat-cell
+					*matCellDef="let row">{{ row.value }}</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="actions">
+				<mat-header-cell
+					*matHeaderCellDef mat-sort-header disableClear="true">
+					Actions 
+				</mat-header-cell>
+				<mat-cell *matCellDef="let row">
+					<button mat-icon-button >
+						<mat-icon matTooltip="Edit" (click)="openDialog('edit', row)">edit</mat-icon>
+					</button>
+					<button mat-icon-button >
+						<mat-icon matTooltip="Delete" (click)="delete(row.id)">delete</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+			<mat-paginator [length]="resultsLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="getChanges($event, nomTypeValue)"></mat-paginator>
+		</div>
+	</div>
+</div>

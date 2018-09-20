@@ -1,0 +1,16 @@
+{
+	"userId": 1,
+	"username": "Gigi",
+	"authorities": [
+		{
+			"authority": "ROLE_ADMIN"
+		},
+		{
+			"authority": "ROLE_USER"
+		}
+	],
+	"accountNonExpired": true,
+	"accountNonLocked": true,
+	"credentialsNonExpired": true,
+	"enabled": true
+}

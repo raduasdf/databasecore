@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{data.type.toUpperCase()}} {{data.userData.login}}</h1>
+<div mat-dialog-content>
+	<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="USERNAME" tabindex="1" [(ngModel)]="data.userData.login">
+		    </mat-form-field>
+		</div>
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="NEW PASSWORD" type="password" tabindex="1" [(ngModel)]="data.userData.newPassword">
+		    </mat-form-field>
+		</div>
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <input matInput placeholder="CONFIRM PASSWORD" type="password" tabindex="1" [(ngModel)]="data.userData.confirmPassword">
+		    </mat-form-field>
+		</div>
+	    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		    <mat-form-field fxFlex="100">
+		        <mat-select placeholder="Roles" [(ngModel)]="data.userData.roles" multiple>
+			        <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+			    </mat-select>
+		    </mat-form-field>
+		</div>
+	</div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="save()" tabindex="2">SAVE</button>
+    <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">CANCEL</button>
+</div>

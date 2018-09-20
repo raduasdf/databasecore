@@ -1,0 +1,244 @@
+<div class="page-layout simple fullwidth" fusePerfectScrollbar>
+	<div class="header mat-accent-bg p-24 h-160" fxLayout="row"
+		fxLayoutAlign="space-between center">
+		<div fxLayout="column" fxLayoutAlign="center start">
+			<div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="secondary-text s-16">home</mat-icon>
+			</div>
+			<div class="h2 mt-16">User Administration</div>
+		</div>
+		
+		<button mat-fab
+               (click)="openDialog('add', {})"
+               class="add-product-button mat-white-bg my-12 mt-sm-0">
+           <mat-icon>add</mat-icon>
+       </button>
+	</div>
+	<div class="content">
+		<div class="example-container mat-elevation-z8">
+			<div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+				<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+					ERROR! API rate limit has been reached.
+				</div>
+			</div>
+
+			<mat-table #table [dataSource]="dataSource" class="example-table"
+				matSort matSortActive="id" matSortDisableClear
+				matSortDirection="asc">
+
+				<ng-container matColumnDef="number">
+
+					<mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+					<mat-cell *matCellDef="let cIndex = index;">{{ getRowIndex(cIndex) }}</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="id">
+						<mat-header-cell *matHeaderCellDef mat-sort-header disableClear="true">ID</mat-header-cell>
+						<mat-cell
+							*matCellDef="let row">{{ row.id }}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="userName">
+					<mat-header-cell *matHeaderCellDef disableClear="true">
+						<div fxFlexFill>
+							<div mat-sort-header>
+								Username
+							</div> 
+							<div>
+								<mat-form-field>
+									<input matInput (keyup)="applyFilter($event.target.value, 0)" placeholder="Search usernames">
+								</mat-form-field>
+							</div>
+						</div>
+					</mat-header-cell>
+
+					<mat-cell *matCellDef="let row"> 
+
+					<div *ngIf="!isEditing[''+row.id]; then simpleBlock; else editBlock"></div>
+
+					<ng-template #simpleBlock>
+							<div>{{ row.userName }}</div>
+					</ng-template>
+					
+					<ng-template #editBlock>
+							<div>
+									<mat-form-field floatLabel="never" >
+										
+										<input matInput placeholder="Username" [value]="row.userName" [(ngModel)]= "row.userName" >
+									</mat-form-field>
+							</div>
+					</ng-template>
+					
+					</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="password">
+					<mat-header-cell *matHeaderCellDef disableClear="true">
+						<div fxFlexFill>
+							<div mat-sort-header>
+								Password
+							</div> 
+							<div>
+								<mat-form-field>
+									<input matInput (keyup)="applyFilter($event.target.value, 1);" placeholder="Search passwords" >
+								</mat-form-field>
+							</div>
+						</div>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row"> 
+
+						<div *ngIf="!isEditing[''+row.id]; then simpleBlock; else editBlock"></div>
+	
+						<ng-template #simpleBlock>
+								<div>{{ row.password }}</div>
+						</ng-template>
+						
+						<ng-template #editBlock>
+								<div>
+										<mat-form-field floatLabel="never" >
+											
+											<input matInput placeholder="Password" [value]="row.passowrd" [(ngModel)]= "row.password" >
+										</mat-form-field>
+								</div>
+						</ng-template>
+						
+						</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="email">
+					<mat-header-cell *matHeaderCellDef disableClear="true">
+						<div fxFlexFill>
+							<div mat-sort-header>
+								Email
+							</div> 
+							<div>
+								<mat-form-field>
+									<input matInput (keyup)="applyFilter($event.target.value, 2)" placeholder="Search emails">
+								</mat-form-field>
+							</div>
+						</div>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row"> 
+
+						<div *ngIf="!isEditing[''+row.id]; then simpleBlock; else editBlock"></div>
+	
+						<ng-template #simpleBlock>
+								<div>{{ row.email }}</div>
+						</ng-template>
+						
+						<ng-template #editBlock>
+								<div>
+										<mat-form-field floatLabel="never" >
+											
+											<input matInput placeholder="Email" [value]="row.email" [(ngModel)]= "row.email" >
+										</mat-form-field>
+								</div>
+						</ng-template>
+						
+						</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="address">
+					<mat-header-cell *matHeaderCellDef disableClear="true">
+						<div fxFlexFill>
+							<div mat-sort-header>
+								Address
+							</div> 
+							<div>
+								<mat-form-field>
+									<input matInput (keyup)="applyFilter($event.target.value, 3)" placeholder="Search addresses">
+								</mat-form-field>
+							</div>
+						</div>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row"> 
+
+						<div *ngIf="!isEditing[''+row.id]; then simpleBlock; else editBlock"></div>
+	
+						<ng-template #simpleBlock>
+								<div>{{ row.address }}</div>
+						</ng-template>
+						
+						<ng-template #editBlock>
+								<div>
+										<mat-form-field floatLabel="never" >
+											
+											<input matInput placeholder="Address" [value]="row.address" [(ngModel)]= "row.address" >
+										</mat-form-field>
+								</div>
+						</ng-template>
+						
+						</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="gender">
+					<mat-header-cell *matHeaderCellDef disableClear="true">
+						<div fxFlexFill>
+							<div mat-sort-header>
+								Gender
+							</div> 
+							<div>
+								<mat-form-field>
+									<input matInput (keyup)="applyFilter($event.target.value, 4)" placeholder="Search genders">
+								</mat-form-field>
+							</div>
+						</div>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row"> 
+
+						<div *ngIf="!isEditing[''+row.id]; then simpleBlock; else editBlock"></div>
+	
+						<ng-template #simpleBlock>
+								<div>{{ row.gender }}</div>
+						</ng-template>
+						
+						<ng-template #editBlock>
+							<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+								<mat-form-field fxFlex="100">
+									<mat-select placeholder="Gender" [(ngModel)]="row.gender">
+										<mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							
+						</ng-template>
+						
+						</mat-cell>
+				</ng-container>
+
+				
+
+				
+				<ng-container matColumnDef="actions">
+					<mat-header-cell
+						*matHeaderCellDef disableClear="true">
+						Actions 
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">
+						<button mat-icon-button (click)="openDialog('edit', row)">
+				            <mat-icon>edit</mat-icon>
+						</button>
+						<button mat-icon-button (click)="isEditing[''+row.id] = !isEditing[''+row.id]; saveEdit(row)">
+				            <mat-icon>edit</mat-icon>
+				        </button>
+				        <mat-checkbox [(ngModel)]="!row.endDate" (change)="changeActive($event, row)"></mat-checkbox>
+					</mat-cell>
+					
+				</ng-container>
+				
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;" 
+					[ngClass]="{hovered: row.hovered, highlighted: !!highlighted['row'+row.id]}" 
+					(click)="highlighted['row'+row.id] = !highlighted['row'+row.id];" 
+					(mouseover)="row.hovered = true" 
+					(mouseout)="row.hovered = false">
+				</mat-row>
+			</mat-table>
+			<mat-paginator [length]="resultsLength" [pageSize]="pageSize"[pageSizeOptions]="pageSizeOptions" (page)="getChanges($event)"></mat-paginator>
+		</div>
+	</div>
+</div>
+
+

@@ -1,0 +1,15 @@
+{
+	"/database-api": {
+		"target": {
+			"host": "localhost",
+			"protocol": "http:",
+			"port": 8082
+		},
+		"pathRewrite": {
+			"^/database-api": ""
+		},
+		"secure": false,
+		"logLevel": "debug",
+		"changeOrigin": true
+	}
+}

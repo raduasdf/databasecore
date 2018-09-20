@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{data.type.toUpperCase()}} nomenclature {{data.nomData.typeValue}}</h1>
+<div mat-dialog-content>
+	<div fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto">
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+			<mat-form-field fxFlex="50">
+				<input matInput placeholder="Code" tabindex="1" [(ngModel)]="data.nomData.code">
+			</mat-form-field>
+			<mat-form-field fxFlex="50">
+				<input matInput placeholder="Value" tabindex="1" [(ngModel)]="data.nomData.value">
+			</mat-form-field>
+		</div>
+	</div>
+</div>
+<div mat-dialog-actions>
+	<button mat-raised-button color="accent" (click)="save()" tabindex="2">SAVE</button>
+	<button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">CANCEL</button>
+</div>

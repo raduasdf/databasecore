@@ -1,0 +1,90 @@
+<div class="page-layout simple fullwidth" fusePerfectScrollbar>
+	<div class="header mat-accent-bg p-24 h-160" fxLayout="row"
+		fxLayoutAlign="space-between center">
+		<div fxLayout="column" fxLayoutAlign="center start">
+			<div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="secondary-text s-16">home</mat-icon>
+			</div>
+			<div class="h2 mt-16">User Administration</div>
+		</div>
+		
+		<button mat-fab
+               (click)="openDialog('add', {})"
+               class="add-product-button mat-white-bg my-12 mt-sm-0">
+           <mat-icon>add</mat-icon>
+       </button>
+	</div>
+	<div class="content">
+		<div class="example-container mat-elevation-z8">
+			<div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+				<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+					ERROR! API rate limit has been reached.
+				</div>
+			</div>
+			<mat-table #table [dataSource]="dataSource" class="example-table"
+				matSort matSortActive="startDate" matSortDisableClear
+				matSortDirection="asc">
+
+				<ng-container matColumnDef="number">
+					<mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+					<mat-cell *matCellDef="let cIndex = index;">{{ getRowIndex(cIndex) }}</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="login">
+					<mat-header-cell
+						*matHeaderCellDef mat-sort-header disableClear="true">Login</mat-header-cell>
+					<mat-cell
+						*matCellDef="let row">{{ row.login }}</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="roles">
+					<mat-header-cell
+						*matHeaderCellDef disableClear="true">
+						Roles
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">
+						<mat-chip-list>
+						    <mat-chip *ngFor="let role of row.roles">{{role}}</mat-chip>
+						</mat-chip-list>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="startDate">
+					<mat-header-cell
+						*matHeaderCellDef mat-sort-header disableClear="true">
+						Start Date 
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">{{ row.startDate | date }}
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="endDate">
+					<mat-header-cell
+						*matHeaderCellDef mat-sort-header disableClear="true">
+						End Date 
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">{{ row.endDate | date }}
+					</mat-cell>
+				</ng-container>
+				
+				<ng-container matColumnDef="actions">
+					<mat-header-cell
+						*matHeaderCellDef mat-sort-header disableClear="true">
+						Actions 
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">
+						<button mat-icon-button (click)="openDialog('edit', row)">
+				            <mat-icon>edit</mat-icon>
+				        </button>
+				        <mat-checkbox [(ngModel)]="!row.endDate" (change)="changeActive($event, row)"></mat-checkbox>
+					</mat-cell>
+				</ng-container>
+				
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+			<mat-paginator [length]="resultsLength" [pageSize]="pageSize"[pageSizeOptions]="pageSizeOptions" (page)="getChanges($event)"></mat-paginator>
+		</div>
+	</div>
+</div>
